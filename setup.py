@@ -2,16 +2,15 @@ from setuptools import setup, find_packages
 
 setup(
     name='rwinrm',
-    version='0.0.3',
+    version='0.0.4',
     packages=find_packages(),
     install_requires=[
-        'pypsrp',
+        'gssapi',
+        'pypsrp[kerberos] @ git+https://github.com/jborean93/pypsrp',
     ],
     entry_points={
         'console_scripts': [
-            'rwinrm=src.main:main',
             'rawwinrm=src.main:main',
-            'rw=src.main:main',
         ],
     },
 )

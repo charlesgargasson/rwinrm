@@ -1,15 +1,26 @@
 from pypsrp.wsman import WSMan
+from pypsrp.client import Client
 from pypsrp.powershell import PowerShell, RunspacePool
 import sys
 
 cmd=[]
 skiplist = []
 curcmd = -1
+auth="negotiate"
+password=None
+service="HTTP"
+
 for i in range(1,len(sys.argv[1:])):
     if i in skiplist :
         continue
 
     match sys.argv[i]:
+        case "--service":
+            service = sys.argv[i+1]
+            skiplist.append(i+1)
+        case "--auth":
+            auth = sys.argv[i+1]
+            skiplist.append(i+1)
         case "--user":
             user = sys.argv[i+1]
             skiplist.append(i+1)
@@ -17,6 +28,9 @@ for i in range(1,len(sys.argv[1:])):
             target = sys.argv[i+1]
             skiplist.append(i+1)
         case "--pass":
+            password = sys.argv[i+1]
+            skiplist.append(i+1)
+        case "--password":
             password = sys.argv[i+1]
             skiplist.append(i+1)
         case "-c":
@@ -54,7 +68,8 @@ for i in range(1,len(sys.argv[1:])):
 # print(json.dumps(cmd))
 
 def run_command(cmd):
-    wsman = WSMan(target, username=user, password=password, ssl=False, auth="negotiate", cert_validation=False)
+    wsman = WSMan(target, username=user, password=password, ssl=False, auth=auth, cert_validation=False, negotiate_service=service)
+
     with RunspacePool(wsman) as pool:
         ps = PowerShell(pool)
         for cmdlet in cmd:
@@ -81,8 +96,8 @@ def run_command(cmd):
             for x in ps.streams.debug: 
                 print(x)
 
-if __name__ == '__main__':
-    main()
-
 def main():
     run_command(cmd)
+
+if __name__ == '__main__':
+    main()
