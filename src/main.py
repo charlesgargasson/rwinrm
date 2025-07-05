@@ -7,6 +7,7 @@ cmd=[]
 skiplist = []
 curcmd = -1
 auth="negotiate"
+user=None
 password=None
 service="HTTP"
 

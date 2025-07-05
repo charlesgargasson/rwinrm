@@ -124,8 +124,8 @@ Kerberos
 
 .. code-block:: bash
 
-    # We use the TGT on service
-    rawwinrm --auth kerberos --host DC.DOMAIN.COM --user 'USER@DOMAIN.COM' -c 'whoami.exe' --service 'CIFS'
+    # We use the TGT on service (no need to set user)
+    rawwinrm --auth kerberos --host DC.DOMAIN.COM -c 'whoami.exe' --service 'CIFS'
 
 |
 
